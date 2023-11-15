@@ -501,11 +501,25 @@ void input_Info_Student_ktCode_trung(nodeptr& list, SV& sv) {
 	} while (true);
 }
 
-//Cau 17
+//17. Tách tất cả các sinh viên xếp loại giỏi ra thành một danh sách khác
 nodeptr split_SV_XL_gioi(nodeptr& list, nodeptr& listbeta) {
-	for (nodeptr node_Check = list; node_Check != NULL; node_Check = node_Check->link) {
-		if (Average_Subject_Score(node_Check->data) >= 8.0)
-			add_Last(listbeta, node_Check->data);
+	while (list != NULL && list->link != NULL) {
+
+		if (Average_Subject_Score(list->link->data) >= 8.0) {
+			add_Last(listbeta, list->link->data);
+			nodeptr temp = list->link;
+			list->link = temp->link;
+			delete(temp);
+		}
+		else if (Average_Subject_Score(list->data) >= 8.0) {
+			add_Last(listbeta, list->data);
+			nodeptr p = list;
+			list = list->link;
+			delete(p);
+		}
+		else
+			list = list->link;
+
 	}
 	return listbeta;
 }
